@@ -1,0 +1,12 @@
+syntax = "proto3";
+package ethclient.ethclient;
+
+import "gogoproto/gogo.proto";
+import "ethclient/ethclient/params.proto";
+
+option go_package = "ethclient/x/ethclient/types";
+
+// GenesisState defines the ethclient module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+}
