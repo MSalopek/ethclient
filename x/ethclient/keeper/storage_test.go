@@ -12,7 +12,7 @@ import (
 	"ethclient/x/ethclient/types"
 )
 
-func createTestStorage(keeper *keeper.Keeper, ctx sdk.Context, addr, key string, block int64) types.Storage {
+func createTestStorage(keeper *keeper.Keeper, ctx sdk.Context, addr, key, block string) types.Storage {
 	item := types.Storage{}
 	keeper.SetStorage(ctx, item, addr, key, block)
 	return item
@@ -22,7 +22,7 @@ func TestStorageCRUD(t *testing.T) {
 	keeper, ctx := keepertest.EthclientKeeper(t)
 	addr := "mock-addr"
 	key := "mock-key"
-	block := int64(0)
+	block := "mock-block"
 	item := createTestStorage(keeper, ctx, addr, key, block)
 	rst, found := keeper.GetStorage(ctx, addr, key, block)
 	require.True(t, found)

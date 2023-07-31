@@ -9,16 +9,12 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateStorage{}, "ethclient/CreateStorage", nil)
-	cdc.RegisterConcrete(&MsgUpdateStorage{}, "ethclient/UpdateStorage", nil)
-	cdc.RegisterConcrete(&MsgDeleteStorage{}, "ethclient/DeleteStorage", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateStorage{},
-		&MsgUpdateStorage{},
-		&MsgDeleteStorage{},
 	)
 	// this line is used by starport scaffolding # 3
 

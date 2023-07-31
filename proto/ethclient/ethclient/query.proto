@@ -20,7 +20,7 @@ service Query {
   }
   
   // Queries a Storage by index.
-  rpc GetStorage (QueryGetStorageRequest) returns (QueryGetStorageResponse) {
+  rpc QueryStorage (QueryGetStorageRequest) returns (QueryGetStorageResponse) {
     option (google.api.http).get = "/ethclient/ethclient/storage";
   
   }
@@ -32,13 +32,13 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   
   // params holds all the parameters of this module.
-  Params params = 1 [(gogoproto.nullable) = false];
+  Params params = 1;
 }
 
 message QueryGetStorageRequest {
-  string address = 1 [(gogoproto.nullable) = false];
-  string block = 2 [(gogoproto.nullable) = false];
-  string key = 3 [(gogoproto.nullable) = false];
+  string address = 1;
+  string block = 2;
+  string key = 3;
 }
 
 message QueryGetStorageResponse {

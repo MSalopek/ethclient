@@ -11,9 +11,12 @@ const (
 
 var _ sdk.Msg = &MsgCreateStorage{}
 
-func NewMsgCreateStorage(creator string) *MsgCreateStorage {
+func NewMsgCreateStorage(creator, address, storage, block string) *MsgCreateStorage {
 	return &MsgCreateStorage{
 		Creator: creator,
+		Address: address,
+		Storage: storage,
+		Block:   block,
 	}
 }
 

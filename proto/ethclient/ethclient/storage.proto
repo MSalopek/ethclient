@@ -6,19 +6,19 @@ option go_package = "ethclient/x/ethclient/types";
 
 
 message Storage {
-  string key = 1 [(gogoproto.nullable) = false];
-  string value = 2 [(gogoproto.nullable) = false];
+  string storage = 1; // storage key
+  string value = 2;
   // timestamp when the value was fetched
   string address = 3;
   string block = 4;
   // medata about the value and request that fetched it
-  Args args = 5 [(gogoproto.nullable) = false];
-  int64 timestamp = 6 [(gogoproto.nullable) = false];
+  Args args = 5;
+  int64 timestamp = 6;
 }
 
 message Args {
-  string address = 1 [(gogoproto.nullable) = false];
-  string storage = 2 [(gogoproto.nullable) = false];
+  string address = 1;
+  string storage = 2;
   // ethereum block height as hex string (padded)
-  string block = 3 [(gogoproto.nullable) = false];
+  string block = 3;
 }

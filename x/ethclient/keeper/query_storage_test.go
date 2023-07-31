@@ -16,7 +16,10 @@ import (
 func TestStorageQuery(t *testing.T) {
 	keeper, ctx := keepertest.EthclientKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
-	item := createTestStorage(keeper, ctx)
+	addr := "mock-addr"
+	key := "mock-key"
+	block := "mock-block"
+	item := createTestStorage(keeper, ctx, addr, key, block)
 	tests := []struct {
 		desc     string
 		request  *types.QueryGetStorageRequest
@@ -24,8 +27,12 @@ func TestStorageQuery(t *testing.T) {
 		err      error
 	}{
 		{
-			desc:     "First",
-			request:  &types.QueryGetStorageRequest{},
+			desc: "First",
+			request: &types.QueryGetStorageRequest{
+				Address: addr,
+				Key:     key,
+				Block:   block,
+			},
 			response: &types.QueryGetStorageResponse{Storage: item},
 		},
 		{
@@ -35,7 +42,7 @@ func TestStorageQuery(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
-			response, err := keeper.Storage(wctx, tc.request)
+			response, err := keeper.QueryStorage(wctx, tc.request)
 			if tc.err != nil {
 				require.ErrorIs(t, err, tc.err)
 			} else {

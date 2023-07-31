@@ -29,6 +29,10 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type MsgCreateStorage struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	Storage string `protobuf:"bytes,3,opt,name=storage,proto3" json:"storage,omitempty"`
+	// ethereum block height as hex string (padded)
+	Block string `protobuf:"bytes,4,opt,name=block,proto3" json:"block,omitempty"`
 }
 
 func (m *MsgCreateStorage) Reset()         { *m = MsgCreateStorage{} }
@@ -71,6 +75,27 @@ func (m *MsgCreateStorage) GetCreator() string {
 	return ""
 }
 
+func (m *MsgCreateStorage) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+func (m *MsgCreateStorage) GetStorage() string {
+	if m != nil {
+		return m.Storage
+	}
+	return ""
+}
+
+func (m *MsgCreateStorage) GetBlock() string {
+	if m != nil {
+		return m.Block
+	}
+	return ""
+}
+
 type MsgCreateStorageResponse struct {
 }
 
@@ -107,194 +132,30 @@ func (m *MsgCreateStorageResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateStorageResponse proto.InternalMessageInfo
 
-type MsgUpdateStorage struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-}
-
-func (m *MsgUpdateStorage) Reset()         { *m = MsgUpdateStorage{} }
-func (m *MsgUpdateStorage) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateStorage) ProtoMessage()    {}
-func (*MsgUpdateStorage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_492b3ce756be7624, []int{2}
-}
-func (m *MsgUpdateStorage) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgUpdateStorage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgUpdateStorage.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgUpdateStorage) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateStorage.Merge(m, src)
-}
-func (m *MsgUpdateStorage) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgUpdateStorage) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateStorage.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgUpdateStorage proto.InternalMessageInfo
-
-func (m *MsgUpdateStorage) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-type MsgUpdateStorageResponse struct {
-}
-
-func (m *MsgUpdateStorageResponse) Reset()         { *m = MsgUpdateStorageResponse{} }
-func (m *MsgUpdateStorageResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgUpdateStorageResponse) ProtoMessage()    {}
-func (*MsgUpdateStorageResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_492b3ce756be7624, []int{3}
-}
-func (m *MsgUpdateStorageResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgUpdateStorageResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgUpdateStorageResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgUpdateStorageResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgUpdateStorageResponse.Merge(m, src)
-}
-func (m *MsgUpdateStorageResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgUpdateStorageResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgUpdateStorageResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgUpdateStorageResponse proto.InternalMessageInfo
-
-type MsgDeleteStorage struct {
-	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
-}
-
-func (m *MsgDeleteStorage) Reset()         { *m = MsgDeleteStorage{} }
-func (m *MsgDeleteStorage) String() string { return proto.CompactTextString(m) }
-func (*MsgDeleteStorage) ProtoMessage()    {}
-func (*MsgDeleteStorage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_492b3ce756be7624, []int{4}
-}
-func (m *MsgDeleteStorage) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgDeleteStorage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgDeleteStorage.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgDeleteStorage) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeleteStorage.Merge(m, src)
-}
-func (m *MsgDeleteStorage) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgDeleteStorage) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeleteStorage.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgDeleteStorage proto.InternalMessageInfo
-
-func (m *MsgDeleteStorage) GetCreator() string {
-	if m != nil {
-		return m.Creator
-	}
-	return ""
-}
-
-type MsgDeleteStorageResponse struct {
-}
-
-func (m *MsgDeleteStorageResponse) Reset()         { *m = MsgDeleteStorageResponse{} }
-func (m *MsgDeleteStorageResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgDeleteStorageResponse) ProtoMessage()    {}
-func (*MsgDeleteStorageResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_492b3ce756be7624, []int{5}
-}
-func (m *MsgDeleteStorageResponse) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *MsgDeleteStorageResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_MsgDeleteStorageResponse.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *MsgDeleteStorageResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgDeleteStorageResponse.Merge(m, src)
-}
-func (m *MsgDeleteStorageResponse) XXX_Size() int {
-	return m.Size()
-}
-func (m *MsgDeleteStorageResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgDeleteStorageResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_MsgDeleteStorageResponse proto.InternalMessageInfo
-
 func init() {
 	proto.RegisterType((*MsgCreateStorage)(nil), "ethclient.ethclient.MsgCreateStorage")
 	proto.RegisterType((*MsgCreateStorageResponse)(nil), "ethclient.ethclient.MsgCreateStorageResponse")
-	proto.RegisterType((*MsgUpdateStorage)(nil), "ethclient.ethclient.MsgUpdateStorage")
-	proto.RegisterType((*MsgUpdateStorageResponse)(nil), "ethclient.ethclient.MsgUpdateStorageResponse")
-	proto.RegisterType((*MsgDeleteStorage)(nil), "ethclient.ethclient.MsgDeleteStorage")
-	proto.RegisterType((*MsgDeleteStorageResponse)(nil), "ethclient.ethclient.MsgDeleteStorageResponse")
 }
 
 func init() { proto.RegisterFile("ethclient/ethclient/tx.proto", fileDescriptor_492b3ce756be7624) }
 
 var fileDescriptor_492b3ce756be7624 = []byte{
-	// 238 bytes of a gzipped FileDescriptorProto
+	// 225 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x49, 0x2d, 0xc9, 0x48,
 	0xce, 0xc9, 0x4c, 0xcd, 0x2b, 0xd1, 0x47, 0xb0, 0x4a, 0x2a, 0xf4, 0x0a, 0x8a, 0xf2, 0x4b, 0xf2,
 	0x85, 0x84, 0xe1, 0x62, 0x7a, 0x70, 0x96, 0x94, 0x22, 0x36, 0x2d, 0xc5, 0x25, 0xf9, 0x45, 0x89,
-	0xe9, 0xa9, 0x10, 0x7d, 0x4a, 0x3a, 0x5c, 0x02, 0xbe, 0xc5, 0xe9, 0xce, 0x45, 0xa9, 0x89, 0x25,
+	0xe9, 0xa9, 0x10, 0x7d, 0x4a, 0x65, 0x5c, 0x02, 0xbe, 0xc5, 0xe9, 0xce, 0x45, 0xa9, 0x89, 0x25,
 	0xa9, 0xc1, 0x10, 0x19, 0x21, 0x09, 0x2e, 0xf6, 0x64, 0x90, 0x40, 0x7e, 0x91, 0x04, 0xa3, 0x02,
-	0xa3, 0x06, 0x67, 0x10, 0x8c, 0xab, 0x24, 0xc5, 0x25, 0x81, 0xae, 0x3a, 0x28, 0xb5, 0xb8, 0x20,
-	0x3f, 0xaf, 0x38, 0x15, 0x6a, 0x52, 0x68, 0x41, 0x0a, 0x09, 0x26, 0xa1, 0xa8, 0x46, 0x33, 0xc9,
-	0x25, 0x35, 0x27, 0x95, 0x78, 0x93, 0x50, 0x54, 0xc3, 0x4c, 0x32, 0xda, 0xc5, 0xc4, 0xc5, 0xec,
-	0x5b, 0x9c, 0x2e, 0x94, 0xca, 0xc5, 0x8b, 0xea, 0x45, 0x55, 0x3d, 0x2c, 0xe1, 0xa5, 0x87, 0xee,
-	0x37, 0x29, 0x5d, 0xa2, 0x94, 0xc1, 0xac, 0x03, 0x59, 0x83, 0xea, 0x7f, 0x9c, 0xd6, 0xa0, 0x28,
-	0xc3, 0x6d, 0x0d, 0xd6, 0xf0, 0x01, 0x59, 0x83, 0x1a, 0x38, 0x38, 0xad, 0x41, 0x51, 0x86, 0xdb,
-	0x1a, 0xac, 0x81, 0xe7, 0x64, 0x7a, 0xe2, 0x91, 0x1c, 0xe3, 0x85, 0x47, 0x72, 0x8c, 0x0f, 0x1e,
-	0xc9, 0x31, 0x4e, 0x78, 0x2c, 0xc7, 0x70, 0xe1, 0xb1, 0x1c, 0xc3, 0x8d, 0xc7, 0x72, 0x0c, 0x51,
-	0xd2, 0x88, 0xd4, 0x54, 0x81, 0x9c, 0x18, 0x2b, 0x0b, 0x52, 0x8b, 0x93, 0xd8, 0xc0, 0x09, 0xcb,
-	0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x46, 0xef, 0xd8, 0x34, 0xb0, 0x02, 0x00, 0x00,
+	0xa3, 0x06, 0x67, 0x10, 0x8c, 0x0b, 0x92, 0x49, 0x4c, 0x49, 0x29, 0x4a, 0x2d, 0x2e, 0x96, 0x60,
+	0x82, 0xc8, 0x40, 0xb9, 0x20, 0x19, 0xa8, 0xc1, 0x12, 0xcc, 0x10, 0x19, 0x28, 0x57, 0x48, 0x84,
+	0x8b, 0x35, 0x29, 0x27, 0x3f, 0x39, 0x5b, 0x82, 0x05, 0x2c, 0x0e, 0xe1, 0x28, 0x49, 0x71, 0x49,
+	0xa0, 0xdb, 0x1b, 0x94, 0x5a, 0x5c, 0x90, 0x9f, 0x57, 0x9c, 0x6a, 0x94, 0xc3, 0xc5, 0xec, 0x5b,
+	0x9c, 0x2e, 0x94, 0xca, 0xc5, 0x8b, 0xea, 0x2e, 0x55, 0x3d, 0x2c, 0x9e, 0xd4, 0x43, 0x37, 0x46,
+	0x4a, 0x97, 0x28, 0x65, 0x30, 0xdb, 0x9c, 0x4c, 0x4f, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e,
+	0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58,
+	0x8e, 0x21, 0x4a, 0x1a, 0x11, 0x68, 0x15, 0xc8, 0x61, 0x5e, 0x59, 0x90, 0x5a, 0x9c, 0xc4, 0x06,
+	0x0e, 0x3f, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x7e, 0x4d, 0xcc, 0x52, 0x97, 0x01, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -310,8 +171,6 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	CreateStorage(ctx context.Context, in *MsgCreateStorage, opts ...grpc.CallOption) (*MsgCreateStorageResponse, error)
-	UpdateStorage(ctx context.Context, in *MsgUpdateStorage, opts ...grpc.CallOption) (*MsgUpdateStorageResponse, error)
-	DeleteStorage(ctx context.Context, in *MsgDeleteStorage, opts ...grpc.CallOption) (*MsgDeleteStorageResponse, error)
 }
 
 type msgClient struct {
@@ -331,29 +190,9 @@ func (c *msgClient) CreateStorage(ctx context.Context, in *MsgCreateStorage, opt
 	return out, nil
 }
 
-func (c *msgClient) UpdateStorage(ctx context.Context, in *MsgUpdateStorage, opts ...grpc.CallOption) (*MsgUpdateStorageResponse, error) {
-	out := new(MsgUpdateStorageResponse)
-	err := c.cc.Invoke(ctx, "/ethclient.ethclient.Msg/UpdateStorage", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *msgClient) DeleteStorage(ctx context.Context, in *MsgDeleteStorage, opts ...grpc.CallOption) (*MsgDeleteStorageResponse, error) {
-	out := new(MsgDeleteStorageResponse)
-	err := c.cc.Invoke(ctx, "/ethclient.ethclient.Msg/DeleteStorage", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreateStorage(context.Context, *MsgCreateStorage) (*MsgCreateStorageResponse, error)
-	UpdateStorage(context.Context, *MsgUpdateStorage) (*MsgUpdateStorageResponse, error)
-	DeleteStorage(context.Context, *MsgDeleteStorage) (*MsgDeleteStorageResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -362,12 +201,6 @@ type UnimplementedMsgServer struct {
 
 func (*UnimplementedMsgServer) CreateStorage(ctx context.Context, req *MsgCreateStorage) (*MsgCreateStorageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateStorage not implemented")
-}
-func (*UnimplementedMsgServer) UpdateStorage(ctx context.Context, req *MsgUpdateStorage) (*MsgUpdateStorageResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateStorage not implemented")
-}
-func (*UnimplementedMsgServer) DeleteStorage(ctx context.Context, req *MsgDeleteStorage) (*MsgDeleteStorageResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteStorage not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -392,42 +225,6 @@ func _Msg_CreateStorage_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Msg_UpdateStorage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgUpdateStorage)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).UpdateStorage(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/ethclient.ethclient.Msg/UpdateStorage",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).UpdateStorage(ctx, req.(*MsgUpdateStorage))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Msg_DeleteStorage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgDeleteStorage)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MsgServer).DeleteStorage(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/ethclient.ethclient.Msg/DeleteStorage",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).DeleteStorage(ctx, req.(*MsgDeleteStorage))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "ethclient.ethclient.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -435,14 +232,6 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateStorage",
 			Handler:    _Msg_CreateStorage_Handler,
-		},
-		{
-			MethodName: "UpdateStorage",
-			Handler:    _Msg_UpdateStorage_Handler,
-		},
-		{
-			MethodName: "DeleteStorage",
-			Handler:    _Msg_DeleteStorage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -469,6 +258,27 @@ func (m *MsgCreateStorage) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if len(m.Block) > 0 {
+		i -= len(m.Block)
+		copy(dAtA[i:], m.Block)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Block)))
+		i--
+		dAtA[i] = 0x22
+	}
+	if len(m.Storage) > 0 {
+		i -= len(m.Storage)
+		copy(dAtA[i:], m.Storage)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Storage)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0x12
+	}
 	if len(m.Creator) > 0 {
 		i -= len(m.Creator)
 		copy(dAtA[i:], m.Creator)
@@ -502,112 +312,6 @@ func (m *MsgCreateStorageResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgUpdateStorage) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgUpdateStorage) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgUpdateStorage) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgUpdateStorageResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgUpdateStorageResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgUpdateStorageResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgDeleteStorage) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgDeleteStorage) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgDeleteStorage) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if len(m.Creator) > 0 {
-		i -= len(m.Creator)
-		copy(dAtA[i:], m.Creator)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
-		i--
-		dAtA[i] = 0xa
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *MsgDeleteStorageResponse) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *MsgDeleteStorageResponse) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *MsgDeleteStorageResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	return len(dAtA) - i, nil
-}
-
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -629,54 +333,22 @@ func (m *MsgCreateStorage) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Storage)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Block)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
 	return n
 }
 
 func (m *MsgCreateStorageResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgUpdateStorage) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgUpdateStorageResponse) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	return n
-}
-
-func (m *MsgDeleteStorage) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	l = len(m.Creator)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
-	}
-	return n
-}
-
-func (m *MsgDeleteStorageResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -752,6 +424,102 @@ func (m *MsgCreateStorage) Unmarshal(dAtA []byte) error {
 			}
 			m.Creator = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Storage", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Storage = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Block", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Block = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -800,270 +568,6 @@ func (m *MsgCreateStorageResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgCreateStorageResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgUpdateStorage) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateStorage: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateStorage: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgUpdateStorageResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgUpdateStorageResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgUpdateStorageResponse: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgDeleteStorage) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeleteStorage: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeleteStorage: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowTx
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Creator = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipTx(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthTx
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *MsgDeleteStorageResponse) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowTx
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: MsgDeleteStorageResponse: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgDeleteStorageResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

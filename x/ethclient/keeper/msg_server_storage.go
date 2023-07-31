@@ -13,18 +13,29 @@ func (k msgServer) CreateStorage(goCtx context.Context, msg *types.MsgCreateStor
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	// Check if the value already exists
-	_, isFound := k.GetStorage(ctx)
+	_, isFound := k.GetStorage(ctx, msg.Address, msg.Storage, msg.Block)
 	if isFound {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "already set")
 	}
 
 	var storage = types.Storage{
-		Creator: msg.Creator,
+		Address: msg.Address,
+		Storage: msg.Storage,
+		Block:   msg.Block,
+		Value:   "TODO",
+		Args: &types.Args{
+			Address: msg.Address,
+			Storage: msg.Storage,
+			Block:   msg.Block,
+		},
 	}
 
 	k.SetStorage(
 		ctx,
 		storage,
+		msg.Address,
+		msg.Storage,
+		msg.Block,
 	)
 	return &types.MsgCreateStorageResponse{}, nil
 }

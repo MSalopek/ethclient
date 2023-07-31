@@ -23,7 +23,7 @@ func CmdShowStorage() *cobra.Command {
 
 			params := &types.QueryGetStorageRequest{}
 
-			res, err := queryClient.Storage(cmd.Context(), params)
+			res, err := queryClient.QueryStorage(cmd.Context(), params)
 			if err != nil {
 				return err
 			}
