@@ -34959,21 +34959,15 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
-  /ethclient/ethclient/storage:
+  /ethclient/ethclient/proof/{address}/{storage}/{block}:
     get:
-      summary: Queries a Storage by index.
-      operationId: EthclientEthclientStorage
+      summary: Queries a list of Proof items.
+      operationId: EthclientEthclientProof
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
-            properties:
-              Storage:
-                type: object
-                properties:
-                  creator:
-                    type: string
         default:
           description: An unexpected error response.
           schema:
@@ -34992,6 +34986,89 @@ paths:
                     '@type':
                       type: string
                   additionalProperties: {}
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+        - name: storage
+          in: path
+          required: true
+          type: string
+        - name: block
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /ethclient/ethclient/storage:
+    get:
+      summary: Queries a Storage by index.
+      operationId: EthclientEthclientQueryStorage
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Storage:
+                type: object
+                properties:
+                  storage:
+                    type: string
+                    title: storage key
+                  value:
+                    type: string
+                  address:
+                    type: string
+                    title: timestamp when the value was fetched
+                  block:
+                    type: string
+                  args:
+                    title: medata about the value and request that fetched it
+                    type: object
+                    properties:
+                      address:
+                        type: string
+                      storage:
+                        type: string
+                      block:
+                        type: string
+                        title: ethereum block height as hex string (padded)
+                  timestamp:
+                    type: string
+                    format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: address
+          in: query
+          required: false
+          type: string
+        - name: block
+          in: query
+          required: false
+          type: string
+        - name: key
+          in: query
+          required: false
+          type: string
       tags:
         - Query
   /ibc/apps/interchain_accounts/controller/v1/owners/{owner}/connections/{connection_id}:
@@ -70602,11 +70679,17 @@ definitions:
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
     description: Period defines a length of time and amount of coins that will vest.
+  ethclient.ethclient.Args:
+    type: object
+    properties:
+      address:
+        type: string
+      storage:
+        type: string
+      block:
+        type: string
+        title: ethereum block height as hex string (padded)
   ethclient.ethclient.MsgCreateStorageResponse:
-    type: object
-  ethclient.ethclient.MsgDeleteStorageResponse:
-    type: object
-  ethclient.ethclient.MsgUpdateStorageResponse:
     type: object
   ethclient.ethclient.Params:
     type: object
@@ -70617,8 +70700,30 @@ definitions:
       Storage:
         type: object
         properties:
-          creator:
+          storage:
             type: string
+            title: storage key
+          value:
+            type: string
+          address:
+            type: string
+            title: timestamp when the value was fetched
+          block:
+            type: string
+          args:
+            title: medata about the value and request that fetched it
+            type: object
+            properties:
+              address:
+                type: string
+              storage:
+                type: string
+              block:
+                type: string
+                title: ethereum block height as hex string (padded)
+          timestamp:
+            type: string
+            format: int64
   ethclient.ethclient.QueryParamsResponse:
     type: object
     properties:
@@ -70626,11 +70731,35 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  ethclient.ethclient.QueryProofResponse:
+    type: object
   ethclient.ethclient.Storage:
     type: object
     properties:
-      creator:
+      storage:
         type: string
+        title: storage key
+      value:
+        type: string
+      address:
+        type: string
+        title: timestamp when the value was fetched
+      block:
+        type: string
+      args:
+        title: medata about the value and request that fetched it
+        type: object
+        properties:
+          address:
+            type: string
+          storage:
+            type: string
+          block:
+            type: string
+            title: ethereum block height as hex string (padded)
+      timestamp:
+        type: string
+        format: int64
   ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccountResponse:
     type: object
     properties:

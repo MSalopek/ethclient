@@ -16,12 +16,18 @@ service Query {
   // Parameters queries the parameters of the module.
   rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/ethclient/ethclient/params";
-
+  
   }
   
   // Queries a Storage by index.
   rpc QueryStorage (QueryGetStorageRequest) returns (QueryGetStorageResponse) {
     option (google.api.http).get = "/ethclient/ethclient/storage";
+  
+  }
+  
+  // Queries a list of Proof items.
+  rpc Proof (QueryProofRequest) returns (QueryProofResponse) {
+    option (google.api.http).get = "/ethclient/ethclient/proof/{address}/{storage}/{block}";
   
   }
 }
@@ -37,11 +43,19 @@ message QueryParamsResponse {
 
 message QueryGetStorageRequest {
   string address = 1;
-  string block = 2;
-  string key = 3;
+  string block   = 2;
+  string key     = 3;
 }
 
 message QueryGetStorageResponse {
   Storage Storage = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryProofRequest {
+  string address = 1;
+  string storage = 2;
+  string block   = 3;
+}
+
+message QueryProofResponse {}
 
