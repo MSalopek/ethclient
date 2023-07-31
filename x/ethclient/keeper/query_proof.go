@@ -4,12 +4,13 @@ import (
 	"context"
 
 	"ethclient/x/ethclient/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) Proof(goCtx context.Context, req *types.QueryProofRequest) (*types.QueryProofResponse, error) {
+func (k Keeper) QueryProof(goCtx context.Context, req *types.QueryProofRequest) (*types.QueryProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}

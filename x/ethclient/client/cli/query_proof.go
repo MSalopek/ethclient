@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"ethclient/x/ethclient/types"
+
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/spf13/cobra"
@@ -35,7 +36,7 @@ func CmdProof() *cobra.Command {
 				Block:   reqBlock,
 			}
 
-			res, err := queryClient.Proof(cmd.Context(), params)
+			res, err := queryClient.QueryProof(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

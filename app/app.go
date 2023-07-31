@@ -113,6 +113,7 @@ import (
 	ethclientmodule "ethclient/x/ethclient"
 	ethclientmodulekeeper "ethclient/x/ethclient/keeper"
 	ethclientmoduletypes "ethclient/x/ethclient/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 
 	appparams "ethclient/app/params"
@@ -519,11 +520,22 @@ func New(
 		),
 	)
 
+	ethUrl := ""
+	configEthereumRpcURL := appOpts.Get(appparams.EthereumRpcURL)
+	if configEthereumRpcURL != nil {
+		ethUrl = cast.ToString(configEthereumRpcURL)
+	}
+
+	if ethUrl == "" {
+		panic("Ethereum RPC URL is not set")
+	}
+
 	app.EthclientKeeper = *ethclientmodulekeeper.NewKeeper(
 		appCodec,
 		keys[ethclientmoduletypes.StoreKey],
 		keys[ethclientmoduletypes.MemStoreKey],
 		app.GetSubspace(ethclientmoduletypes.ModuleName),
+		ethUrl,
 	)
 	ethclientModule := ethclientmodule.NewAppModule(appCodec, app.EthclientKeeper, app.AccountKeeper, app.BankKeeper)
 

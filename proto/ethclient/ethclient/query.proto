@@ -26,7 +26,7 @@ service Query {
   }
   
   // Queries a list of Proof items.
-  rpc Proof (QueryProofRequest) returns (QueryProofResponse) {
+  rpc QueryProof (QueryProofRequest) returns (QueryProofResponse) {
     option (google.api.http).get = "/ethclient/ethclient/proof/{address}/{storage}/{block}";
   
   }
@@ -57,5 +57,7 @@ message QueryProofRequest {
   string block   = 3;
 }
 
-message QueryProofResponse {}
+message QueryProofResponse {
+  string proof = 1; // JSON encoded proof obtained by eth_getProof
+}
 
