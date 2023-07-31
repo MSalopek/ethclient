@@ -1,26 +1,47 @@
 syntax = "proto3";
+
 package ethclient.ethclient;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "ethclient/ethclient/params.proto";
+import "ethclient/ethclient/storage.proto";
 
 option go_package = "ethclient/x/ethclient/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/ethclient/ethclient/params";
+
+  }
+  
+  // Queries a Storage by index.
+  rpc GetStorage (QueryGetStorageRequest) returns (QueryGetStorageResponse) {
+    option (google.api.http).get = "/ethclient/ethclient/storage";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
 }
+
+message QueryGetStorageRequest {
+  string address = 1 [(gogoproto.nullable) = false];
+  string block = 2 [(gogoproto.nullable) = false];
+  string key = 3 [(gogoproto.nullable) = false];
+}
+
+message QueryGetStorageResponse {
+  Storage Storage = 1 [(gogoproto.nullable) = false];
+}
+

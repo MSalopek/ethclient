@@ -93,6 +93,7 @@ Some hints on verification:
 TODOs:
 1. Actually verify proofs obtained from `eth_getProof`
 2. improve testing
+3. improve CRUD
 
 # Sources
 * https://blog.infura.io/post/how-to-use-ethereum-proofs-2

@@ -34959,6 +34959,41 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /ethclient/ethclient/storage:
+    get:
+      summary: Queries a Storage by index.
+      operationId: EthclientEthclientStorage
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              Storage:
+                type: object
+                properties:
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      tags:
+        - Query
   /ibc/apps/interchain_accounts/controller/v1/owners/{owner}/connections/{connection_id}:
     get:
       summary: >-
@@ -70567,9 +70602,23 @@ definitions:
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
     description: Period defines a length of time and amount of coins that will vest.
+  ethclient.ethclient.MsgCreateStorageResponse:
+    type: object
+  ethclient.ethclient.MsgDeleteStorageResponse:
+    type: object
+  ethclient.ethclient.MsgUpdateStorageResponse:
+    type: object
   ethclient.ethclient.Params:
     type: object
     description: Params defines the parameters for the module.
+  ethclient.ethclient.QueryGetStorageResponse:
+    type: object
+    properties:
+      Storage:
+        type: object
+        properties:
+          creator:
+            type: string
   ethclient.ethclient.QueryParamsResponse:
     type: object
     properties:
@@ -70577,6 +70626,11 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  ethclient.ethclient.Storage:
+    type: object
+    properties:
+      creator:
+        type: string
   ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccountResponse:
     type: object
     properties:

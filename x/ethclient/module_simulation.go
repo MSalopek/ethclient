@@ -23,7 +23,19 @@ var (
 )
 
 const (
-// this line is used by starport scaffolding # simapp/module/const
+	opWeightMsgCreateStorage = "op_weight_msg_storage"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateStorage int = 100
+
+	opWeightMsgUpdateStorage = "op_weight_msg_storage"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateStorage int = 100
+
+	opWeightMsgDeleteStorage = "op_weight_msg_storage"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteStorage int = 100
+
+	// this line is used by starport scaffolding # simapp/module/const
 )
 
 // GenerateGenesisState creates a randomized GenState of the module.
@@ -51,6 +63,39 @@ func (AppModule) ProposalContents(_ module.SimulationState) []simtypes.WeightedP
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
+	var weightMsgCreateStorage int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateStorage, &weightMsgCreateStorage, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateStorage = defaultWeightMsgCreateStorage
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateStorage,
+		ethclientsimulation.SimulateMsgCreateStorage(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateStorage int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateStorage, &weightMsgUpdateStorage, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateStorage = defaultWeightMsgUpdateStorage
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateStorage,
+		ethclientsimulation.SimulateMsgUpdateStorage(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteStorage int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteStorage, &weightMsgDeleteStorage, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteStorage = defaultWeightMsgDeleteStorage
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteStorage,
+		ethclientsimulation.SimulateMsgDeleteStorage(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
 	// this line is used by starport scaffolding # simapp/module/operation
 
 	return operations
@@ -59,6 +104,30 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 // ProposalMsgs returns msgs used for governance proposals for simulations.
 func (am AppModule) ProposalMsgs(simState module.SimulationState) []simtypes.WeightedProposalMsg {
 	return []simtypes.WeightedProposalMsg{
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgCreateStorage,
+			defaultWeightMsgCreateStorage,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				ethclientsimulation.SimulateMsgCreateStorage(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgUpdateStorage,
+			defaultWeightMsgUpdateStorage,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				ethclientsimulation.SimulateMsgUpdateStorage(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
+		simulation.NewWeightedProposalMsg(
+			opWeightMsgDeleteStorage,
+			defaultWeightMsgDeleteStorage,
+			func(r *rand.Rand, ctx sdk.Context, accs []simtypes.Account) sdk.Msg {
+				ethclientsimulation.SimulateMsgDeleteStorage(am.accountKeeper, am.bankKeeper, am.keeper)
+				return nil
+			},
+		),
 		// this line is used by starport scaffolding # simapp/module/OpMsg
 	}
 }

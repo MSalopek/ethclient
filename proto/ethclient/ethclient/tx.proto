@@ -1,7 +1,32 @@
 syntax = "proto3";
+
 package ethclient.ethclient;
+
+import "ethclient/ethclient/storage.proto";
 
 option go_package = "ethclient/x/ethclient/types";
 
 // Msg defines the Msg service.
-service Msg {}
+service Msg {
+  rpc CreateStorage (MsgCreateStorage) returns (MsgCreateStorageResponse);
+  rpc UpdateStorage (MsgUpdateStorage) returns (MsgUpdateStorageResponse);
+  rpc DeleteStorage (MsgDeleteStorage) returns (MsgDeleteStorageResponse);
+}
+message MsgCreateStorage {
+  string creator = 1;
+}
+
+message MsgCreateStorageResponse {}
+
+message MsgUpdateStorage {
+  string creator = 1;
+}
+
+message MsgUpdateStorageResponse {}
+
+message MsgDeleteStorage {
+  string creator = 1;
+}
+
+message MsgDeleteStorageResponse {}
+

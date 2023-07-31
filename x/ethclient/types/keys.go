@@ -1,5 +1,7 @@
 package types
 
+import fmt "fmt"
+
 const (
 	// ModuleName defines the module name
 	ModuleName = "ethclient"
@@ -16,4 +18,15 @@ const (
 
 func KeyPrefix(p string) []byte {
 	return []byte(p)
+}
+
+const (
+	StorageKeyPrefix = "Storage"
+)
+
+// Returns storage key in the form "Storage/{address}/{key}/{block}" as bytes
+// ethereum block is saved as hexencoded string of block height
+// NOTE: this can be made more efficient
+func GetStorageKey(address, key, block string) []byte {
+	return []byte(fmt.Sprintf("%s/%s/%s/%s", StorageKeyPrefix, address, key, block))
 }
