@@ -18,7 +18,7 @@ func TestStorageQuery(t *testing.T) {
 	wctx := sdk.WrapSDKContext(ctx)
 	addr := "mock-addr"
 	key := "mock-key"
-	block := "mock-block"
+	block := int64(1)
 	item := createTestStorage(keeper, ctx, addr, key, block)
 	tests := []struct {
 		desc     string

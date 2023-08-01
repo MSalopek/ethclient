@@ -6,21 +6,21 @@ option go_package = "ethclient/x/ethclient/types";
 
 
 message Storage {
-  string storage = 1; // storage key
-  string value = 2;
-  // timestamp when the value was fetched
-  string address = 3;
-  string block = 4;
+  // ethereum storage key
+  bytes value = 1;
   // medata about the value and request that fetched it
-  Args args = 5;
-  int64 timestamp = 6;
+  MetaData meta = 2;
 }
 
-message Args {
+message MetaData {
+  // contract address that was queried
   string address = 1;
+  // storage key that was queried for the contract
   string storage = 2;
   // ethereum block height as hex string (padded)
-  string block = 3;
+  int64 block = 3;
+  // unix nano timestamp when data was fetched
+  int64 timestamp = 4;
 }
 
 

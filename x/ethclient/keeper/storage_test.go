@@ -12,13 +12,13 @@ import (
 	"ethclient/x/ethclient/types"
 )
 
-func createTestStorage(keeper *keeper.Keeper, ctx sdk.Context, addr, key, block string) types.Storage {
+func createTestStorage(keeper *keeper.Keeper, ctx sdk.Context, addr, key string, block int64) types.Storage {
 	item := types.Storage{}
 	keeper.SetStorage(ctx, item, addr, key, block)
 	return item
 }
 
-func createTestProof(keeper *keeper.Keeper, ctx sdk.Context, addr, key, block string) types.StorageProof {
+func createTestProof(keeper *keeper.Keeper, ctx sdk.Context, addr, key string, block int64) types.StorageProof {
 	item := types.StorageProof{
 		Proof: []byte(`{"storage": 0, proof: []}`),
 	}
@@ -30,7 +30,7 @@ func TestStorageCRUD(t *testing.T) {
 	keeper, ctx := keepertest.EthclientKeeper(t)
 	addr := "mock-addr"
 	key := "mock-key"
-	block := "mock-block"
+	block := int64(1)
 	item := createTestStorage(keeper, ctx, addr, key, block)
 	rst, found := keeper.GetStorage(ctx, addr, key, block)
 	require.True(t, found)
@@ -44,7 +44,7 @@ func TestProofCRUD(t *testing.T) {
 	keeper, ctx := keepertest.EthclientKeeper(t)
 	addr := "mock-addr"
 	key := "mock-key"
-	block := "mock-block"
+	block := int64(1)
 	item := createTestProof(keeper, ctx, addr, key, block)
 	rst, found := keeper.GetProof(ctx, addr, key, block)
 	require.True(t, found)

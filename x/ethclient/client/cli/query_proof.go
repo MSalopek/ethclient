@@ -27,13 +27,18 @@ func CmdProof() *cobra.Command {
 				return err
 			}
 
+			parsedBlock, err := strconv.Atoi(reqBlock)
+			if err != nil {
+				return err
+			}
+
 			queryClient := types.NewQueryClient(clientCtx)
 
 			params := &types.QueryProofRequest{
 
 				Address: reqAddress,
 				Storage: reqStorage,
-				Block:   reqBlock,
+				Block:   int64(parsedBlock),
 			}
 
 			res, err := queryClient.QueryProof(cmd.Context(), params)

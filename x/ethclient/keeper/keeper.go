@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/big"
-	"strconv"
 	"time"
 
 	"github.com/cometbft/cometbft/libs/log"
@@ -90,26 +89,22 @@ func (k Keeper) EthCreateStorage(ctx sdk.Context, address, storageKey string, bl
 		return types.Storage{}, err
 	}
 
-	bs := strconv.Itoa(int(block))
-	args := types.Args{
-		Address: address,
-		Storage: storageKey,
-		Block:   bs,
-	}
-	s := types.Storage{
+	meta := types.MetaData{
 		Address:   address,
 		Storage:   storageKey,
-		Block:     bs,
-		Value:     string(storageValRes),
-		Args:      &args,
+		Block:     block,
 		Timestamp: time.Now().UnixNano(),
+	}
+	s := types.Storage{
+		Value: storageValRes,
+		Meta:  &meta,
 	}
 	p := types.StorageProof{
 		Proof: proofRes,
 	}
 
-	k.SetStorage(ctx, s, address, storageKey, bs)
-	k.SetProof(ctx, address, storageKey, bs, p)
+	k.SetStorage(ctx, s, address, storageKey, block)
+	k.SetProof(ctx, address, storageKey, block, p)
 
 	return s, nil
 }

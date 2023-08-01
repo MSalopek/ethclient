@@ -24,14 +24,10 @@ var _ = math.Inf
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 type Storage struct {
-	Storage string `protobuf:"bytes,1,opt,name=storage,proto3" json:"storage,omitempty"`
-	Value   string `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
-	// timestamp when the value was fetched
-	Address string `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
-	Block   string `protobuf:"bytes,4,opt,name=block,proto3" json:"block,omitempty"`
+	// ethereum storage key
+	Value []byte `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
 	// medata about the value and request that fetched it
-	Args      *Args `protobuf:"bytes,5,opt,name=args,proto3" json:"args,omitempty"`
-	Timestamp int64 `protobuf:"varint,6,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Meta *MetaData `protobuf:"bytes,2,opt,name=meta,proto3" json:"meta,omitempty"`
 }
 
 func (m *Storage) Reset()         { *m = Storage{} }
@@ -67,67 +63,43 @@ func (m *Storage) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Storage proto.InternalMessageInfo
 
-func (m *Storage) GetStorage() string {
-	if m != nil {
-		return m.Storage
-	}
-	return ""
-}
-
-func (m *Storage) GetValue() string {
+func (m *Storage) GetValue() []byte {
 	if m != nil {
 		return m.Value
-	}
-	return ""
-}
-
-func (m *Storage) GetAddress() string {
-	if m != nil {
-		return m.Address
-	}
-	return ""
-}
-
-func (m *Storage) GetBlock() string {
-	if m != nil {
-		return m.Block
-	}
-	return ""
-}
-
-func (m *Storage) GetArgs() *Args {
-	if m != nil {
-		return m.Args
 	}
 	return nil
 }
 
-func (m *Storage) GetTimestamp() int64 {
+func (m *Storage) GetMeta() *MetaData {
 	if m != nil {
-		return m.Timestamp
+		return m.Meta
 	}
-	return 0
+	return nil
 }
 
-type Args struct {
+type MetaData struct {
+	// contract address that was queried
 	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	// storage key that was queried for the contract
 	Storage string `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
 	// ethereum block height as hex string (padded)
-	Block string `protobuf:"bytes,3,opt,name=block,proto3" json:"block,omitempty"`
+	Block int64 `protobuf:"varint,3,opt,name=block,proto3" json:"block,omitempty"`
+	// unix nano timestamp when data was fetched
+	Timestamp int64 `protobuf:"varint,4,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 }
 
-func (m *Args) Reset()         { *m = Args{} }
-func (m *Args) String() string { return proto.CompactTextString(m) }
-func (*Args) ProtoMessage()    {}
-func (*Args) Descriptor() ([]byte, []int) {
+func (m *MetaData) Reset()         { *m = MetaData{} }
+func (m *MetaData) String() string { return proto.CompactTextString(m) }
+func (*MetaData) ProtoMessage()    {}
+func (*MetaData) Descriptor() ([]byte, []int) {
 	return fileDescriptor_4fb230d2b67141a8, []int{1}
 }
-func (m *Args) XXX_Unmarshal(b []byte) error {
+func (m *MetaData) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Args) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MetaData) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Args.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MetaData.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -137,37 +109,44 @@ func (m *Args) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Args) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Args.Merge(m, src)
+func (m *MetaData) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MetaData.Merge(m, src)
 }
-func (m *Args) XXX_Size() int {
+func (m *MetaData) XXX_Size() int {
 	return m.Size()
 }
-func (m *Args) XXX_DiscardUnknown() {
-	xxx_messageInfo_Args.DiscardUnknown(m)
+func (m *MetaData) XXX_DiscardUnknown() {
+	xxx_messageInfo_MetaData.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Args proto.InternalMessageInfo
+var xxx_messageInfo_MetaData proto.InternalMessageInfo
 
-func (m *Args) GetAddress() string {
+func (m *MetaData) GetAddress() string {
 	if m != nil {
 		return m.Address
 	}
 	return ""
 }
 
-func (m *Args) GetStorage() string {
+func (m *MetaData) GetStorage() string {
 	if m != nil {
 		return m.Storage
 	}
 	return ""
 }
 
-func (m *Args) GetBlock() string {
+func (m *MetaData) GetBlock() int64 {
 	if m != nil {
 		return m.Block
 	}
-	return ""
+	return 0
+}
+
+func (m *MetaData) GetTimestamp() int64 {
+	if m != nil {
+		return m.Timestamp
+	}
+	return 0
 }
 
 // Storage Merkle Proof obtained by eth_getProof call
@@ -219,32 +198,31 @@ func (m *StorageProof) GetProof() []byte {
 
 func init() {
 	proto.RegisterType((*Storage)(nil), "ethclient.ethclient.Storage")
-	proto.RegisterType((*Args)(nil), "ethclient.ethclient.Args")
+	proto.RegisterType((*MetaData)(nil), "ethclient.ethclient.MetaData")
 	proto.RegisterType((*StorageProof)(nil), "ethclient.ethclient.StorageProof")
 }
 
 func init() { proto.RegisterFile("ethclient/ethclient/storage.proto", fileDescriptor_4fb230d2b67141a8) }
 
 var fileDescriptor_4fb230d2b67141a8 = []byte{
-	// 275 bytes of a gzipped FileDescriptorProto
+	// 260 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0x4c, 0x2d, 0xc9, 0x48,
 	0xce, 0xc9, 0x4c, 0xcd, 0x2b, 0xd1, 0x47, 0xb0, 0x8a, 0x4b, 0xf2, 0x8b, 0x12, 0xd3, 0x53, 0xf5,
 	0x0a, 0x8a, 0xf2, 0x4b, 0xf2, 0x85, 0x84, 0xe1, 0x12, 0x7a, 0x70, 0x96, 0x94, 0x48, 0x7a, 0x7e,
-	0x7a, 0x3e, 0x58, 0x5e, 0x1f, 0xc4, 0x82, 0x28, 0x55, 0xda, 0xc6, 0xc8, 0xc5, 0x1e, 0x0c, 0xd1,
-	0x2c, 0x24, 0xc1, 0xc5, 0x0e, 0x35, 0x47, 0x82, 0x51, 0x81, 0x51, 0x83, 0x33, 0x08, 0xc6, 0x15,
-	0x12, 0xe1, 0x62, 0x2d, 0x4b, 0xcc, 0x29, 0x4d, 0x95, 0x60, 0x02, 0x8b, 0x43, 0x38, 0x20, 0xf5,
-	0x89, 0x29, 0x29, 0x45, 0xa9, 0xc5, 0xc5, 0x12, 0xcc, 0x10, 0xf5, 0x50, 0x2e, 0x48, 0x7d, 0x52,
-	0x4e, 0x7e, 0x72, 0xb6, 0x04, 0x0b, 0x44, 0x3d, 0x98, 0x23, 0xa4, 0xcb, 0xc5, 0x92, 0x58, 0x94,
-	0x5e, 0x2c, 0xc1, 0xaa, 0xc0, 0xa8, 0xc1, 0x6d, 0x24, 0xa9, 0x87, 0xc5, 0x95, 0x7a, 0x8e, 0x45,
-	0xe9, 0xc5, 0x41, 0x60, 0x65, 0x42, 0x32, 0x5c, 0x9c, 0x25, 0x99, 0xb9, 0xa9, 0xc5, 0x25, 0x89,
-	0xb9, 0x05, 0x12, 0x6c, 0x0a, 0x8c, 0x1a, 0xcc, 0x41, 0x08, 0x01, 0xa5, 0x00, 0x2e, 0x16, 0x90,
-	0x5a, 0x64, 0x47, 0x30, 0xa2, 0x3a, 0x02, 0xc9, 0x3b, 0x4c, 0x18, 0xde, 0x81, 0x38, 0x8f, 0x19,
-	0xc9, 0x79, 0x4a, 0x2a, 0x5c, 0x3c, 0xd0, 0x90, 0x08, 0x28, 0xca, 0xcf, 0x4f, 0x03, 0xa9, 0x2a,
-	0x00, 0x31, 0xc0, 0xe6, 0xf2, 0x04, 0x41, 0x38, 0x4e, 0xa6, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78,
-	0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc,
-	0x78, 0x2c, 0xc7, 0x10, 0x25, 0x8d, 0x88, 0x8e, 0x0a, 0xa4, 0xa8, 0x29, 0xa9, 0x2c, 0x48, 0x2d,
-	0x4e, 0x62, 0x03, 0x07, 0xb7, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff, 0x18, 0x3e, 0x68, 0xd7, 0xbe,
-	0x01, 0x00, 0x00,
+	0x7a, 0x3e, 0x58, 0x5e, 0x1f, 0xc4, 0x82, 0x28, 0x55, 0x0a, 0xe2, 0x62, 0x0f, 0x86, 0xe8, 0x15,
+	0x12, 0xe1, 0x62, 0x2d, 0x4b, 0xcc, 0x29, 0x4d, 0x95, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x09, 0x82,
+	0x70, 0x84, 0x0c, 0xb9, 0x58, 0x72, 0x53, 0x4b, 0x12, 0x25, 0x98, 0x14, 0x18, 0x35, 0xb8, 0x8d,
+	0x64, 0xf5, 0xb0, 0x18, 0xad, 0xe7, 0x9b, 0x5a, 0x92, 0xe8, 0x92, 0x58, 0x92, 0x18, 0x04, 0x56,
+	0xaa, 0x54, 0xc4, 0xc5, 0x01, 0x13, 0x11, 0x92, 0xe0, 0x62, 0x4f, 0x4c, 0x49, 0x29, 0x4a, 0x2d,
+	0x2e, 0x06, 0x1b, 0xcb, 0x19, 0x04, 0xe3, 0x82, 0x64, 0xa0, 0xae, 0x06, 0x9b, 0xcd, 0x19, 0x04,
+	0xe3, 0x82, 0x1c, 0x92, 0x94, 0x93, 0x9f, 0x9c, 0x2d, 0xc1, 0xac, 0xc0, 0xa8, 0xc1, 0x1c, 0x04,
+	0xe1, 0x08, 0xc9, 0x70, 0x71, 0x96, 0x64, 0xe6, 0xa6, 0x16, 0x97, 0x24, 0xe6, 0x16, 0x48, 0xb0,
+	0x80, 0x65, 0x10, 0x02, 0x4a, 0x2a, 0x5c, 0x3c, 0x50, 0x7f, 0x04, 0x14, 0xe5, 0xe7, 0xa7, 0x81,
+	0xcc, 0x28, 0x00, 0x31, 0x60, 0x9e, 0x01, 0x73, 0x9c, 0x4c, 0x4f, 0x3c, 0x92, 0x63, 0xbc, 0xf0,
+	0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8,
+	0xf1, 0x58, 0x8e, 0x21, 0x4a, 0x1a, 0x11, 0x96, 0x15, 0x48, 0xe1, 0x5a, 0x52, 0x59, 0x90, 0x5a,
+	0x9c, 0xc4, 0x06, 0x0e, 0x2b, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0xde, 0x79, 0xa2, 0xb8,
+	0x7b, 0x01, 0x00, 0x00,
 }
 
 func (m *Storage) Marshal() (dAtA []byte, err error) {
@@ -267,14 +245,9 @@ func (m *Storage) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if m.Timestamp != 0 {
-		i = encodeVarintStorage(dAtA, i, uint64(m.Timestamp))
-		i--
-		dAtA[i] = 0x30
-	}
-	if m.Args != nil {
+	if m.Meta != nil {
 		{
-			size, err := m.Args.MarshalToSizedBuffer(dAtA[:i])
+			size, err := m.Meta.MarshalToSizedBuffer(dAtA[:i])
 			if err != nil {
 				return 0, err
 			}
@@ -282,40 +255,19 @@ func (m *Storage) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			i = encodeVarintStorage(dAtA, i, uint64(size))
 		}
 		i--
-		dAtA[i] = 0x2a
-	}
-	if len(m.Block) > 0 {
-		i -= len(m.Block)
-		copy(dAtA[i:], m.Block)
-		i = encodeVarintStorage(dAtA, i, uint64(len(m.Block)))
-		i--
-		dAtA[i] = 0x22
-	}
-	if len(m.Address) > 0 {
-		i -= len(m.Address)
-		copy(dAtA[i:], m.Address)
-		i = encodeVarintStorage(dAtA, i, uint64(len(m.Address)))
-		i--
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x12
 	}
 	if len(m.Value) > 0 {
 		i -= len(m.Value)
 		copy(dAtA[i:], m.Value)
 		i = encodeVarintStorage(dAtA, i, uint64(len(m.Value)))
 		i--
-		dAtA[i] = 0x12
-	}
-	if len(m.Storage) > 0 {
-		i -= len(m.Storage)
-		copy(dAtA[i:], m.Storage)
-		i = encodeVarintStorage(dAtA, i, uint64(len(m.Storage)))
-		i--
 		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *Args) Marshal() (dAtA []byte, err error) {
+func (m *MetaData) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -325,22 +277,25 @@ func (m *Args) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Args) MarshalTo(dAtA []byte) (int, error) {
+func (m *MetaData) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Args) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MetaData) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Block) > 0 {
-		i -= len(m.Block)
-		copy(dAtA[i:], m.Block)
-		i = encodeVarintStorage(dAtA, i, uint64(len(m.Block)))
+	if m.Timestamp != 0 {
+		i = encodeVarintStorage(dAtA, i, uint64(m.Timestamp))
 		i--
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x20
+	}
+	if m.Block != 0 {
+		i = encodeVarintStorage(dAtA, i, uint64(m.Block))
+		i--
+		dAtA[i] = 0x18
 	}
 	if len(m.Storage) > 0 {
 		i -= len(m.Storage)
@@ -406,33 +361,18 @@ func (m *Storage) Size() (n int) {
 	}
 	var l int
 	_ = l
-	l = len(m.Storage)
-	if l > 0 {
-		n += 1 + l + sovStorage(uint64(l))
-	}
 	l = len(m.Value)
 	if l > 0 {
 		n += 1 + l + sovStorage(uint64(l))
 	}
-	l = len(m.Address)
-	if l > 0 {
+	if m.Meta != nil {
+		l = m.Meta.Size()
 		n += 1 + l + sovStorage(uint64(l))
-	}
-	l = len(m.Block)
-	if l > 0 {
-		n += 1 + l + sovStorage(uint64(l))
-	}
-	if m.Args != nil {
-		l = m.Args.Size()
-		n += 1 + l + sovStorage(uint64(l))
-	}
-	if m.Timestamp != 0 {
-		n += 1 + sovStorage(uint64(m.Timestamp))
 	}
 	return n
 }
 
-func (m *Args) Size() (n int) {
+func (m *MetaData) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -446,9 +386,11 @@ func (m *Args) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovStorage(uint64(l))
 	}
-	l = len(m.Block)
-	if l > 0 {
-		n += 1 + l + sovStorage(uint64(l))
+	if m.Block != 0 {
+		n += 1 + sovStorage(uint64(m.Block))
+	}
+	if m.Timestamp != 0 {
+		n += 1 + sovStorage(uint64(m.Timestamp))
 	}
 	return n
 }
@@ -503,9 +445,9 @@ func (m *Storage) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Storage", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
 			}
-			var stringLen uint64
+			var byteLen int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowStorage
@@ -515,123 +457,29 @@ func (m *Storage) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				byteLen |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
+			if byteLen < 0 {
 				return ErrInvalidLengthStorage
 			}
-			postIndex := iNdEx + intStringLen
+			postIndex := iNdEx + byteLen
 			if postIndex < 0 {
 				return ErrInvalidLengthStorage
 			}
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Storage = string(dAtA[iNdEx:postIndex])
+			m.Value = append(m.Value[:0], dAtA[iNdEx:postIndex]...)
+			if m.Value == nil {
+				m.Value = []byte{}
+			}
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Value", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowStorage
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthStorage
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthStorage
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Value = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowStorage
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthStorage
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthStorage
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Address = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 4:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Block", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowStorage
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthStorage
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthStorage
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Block = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 5:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Args", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Meta", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -658,32 +506,13 @@ func (m *Storage) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			if m.Args == nil {
-				m.Args = &Args{}
+			if m.Meta == nil {
+				m.Meta = &MetaData{}
 			}
-			if err := m.Args.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			if err := m.Meta.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex
-		case 6:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Timestamp", wireType)
-			}
-			m.Timestamp = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowStorage
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Timestamp |= int64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipStorage(dAtA[iNdEx:])
@@ -705,7 +534,7 @@ func (m *Storage) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *Args) Unmarshal(dAtA []byte) error {
+func (m *MetaData) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -728,10 +557,10 @@ func (m *Args) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Args: wiretype end group for non-group")
+			return fmt.Errorf("proto: MetaData: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Args: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MetaData: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -799,10 +628,10 @@ func (m *Args) Unmarshal(dAtA []byte) error {
 			m.Storage = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Block", wireType)
 			}
-			var stringLen uint64
+			m.Block = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowStorage
@@ -812,24 +641,30 @@ func (m *Args) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.Block |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthStorage
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Timestamp", wireType)
 			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthStorage
+			m.Timestamp = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowStorage
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Timestamp |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
 			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Block = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipStorage(dAtA[iNdEx:])

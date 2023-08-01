@@ -2,6 +2,7 @@ package cli
 
 import (
 	"ethclient/x/ethclient/types"
+	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
@@ -15,13 +16,21 @@ func CmdCreateStorage() *cobra.Command {
 		Short: "Create storage",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
+			reqAddress := args[0]
+			reqStorage := args[1]
+			reqBlock := args[2]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreateStorage(clientCtx.GetFromAddress().String(), args[0], args[1], args[2])
+			parsedBlock, err := strconv.Atoi(reqBlock)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgCreateStorage(clientCtx.GetFromAddress().String(), reqAddress, reqStorage, int64(parsedBlock))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

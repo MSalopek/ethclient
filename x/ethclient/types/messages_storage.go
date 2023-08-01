@@ -11,7 +11,7 @@ const (
 
 var _ sdk.Msg = &MsgCreateStorage{}
 
-func NewMsgCreateStorage(creator, address, storage, block string) *MsgCreateStorage {
+func NewMsgCreateStorage(creator, address, storage string, block int64) *MsgCreateStorage {
 	return &MsgCreateStorage{
 		Creator: creator,
 		Address: address,
@@ -52,7 +52,7 @@ func (msg *MsgCreateStorage) ValidateBasic() error {
 	if msg.Storage == "" {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "storage cannot be empty")
 	}
-	if msg.Block == "" {
+	if msg.Block == 0 {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "block cannot be empty")
 	}
 	return nil

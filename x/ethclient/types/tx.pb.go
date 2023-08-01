@@ -32,7 +32,7 @@ type MsgCreateStorage struct {
 	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	Storage string `protobuf:"bytes,3,opt,name=storage,proto3" json:"storage,omitempty"`
 	// ethereum block height as hex string (padded)
-	Block string `protobuf:"bytes,4,opt,name=block,proto3" json:"block,omitempty"`
+	Block int64 `protobuf:"varint,4,opt,name=block,proto3" json:"block,omitempty"`
 }
 
 func (m *MsgCreateStorage) Reset()         { *m = MsgCreateStorage{} }
@@ -89,14 +89,15 @@ func (m *MsgCreateStorage) GetStorage() string {
 	return ""
 }
 
-func (m *MsgCreateStorage) GetBlock() string {
+func (m *MsgCreateStorage) GetBlock() int64 {
 	if m != nil {
 		return m.Block
 	}
-	return ""
+	return 0
 }
 
 type MsgCreateStorageResponse struct {
+	Storage *Storage `protobuf:"bytes,1,opt,name=storage,proto3" json:"storage,omitempty"`
 }
 
 func (m *MsgCreateStorageResponse) Reset()         { *m = MsgCreateStorageResponse{} }
@@ -132,6 +133,13 @@ func (m *MsgCreateStorageResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCreateStorageResponse proto.InternalMessageInfo
 
+func (m *MsgCreateStorageResponse) GetStorage() *Storage {
+	if m != nil {
+		return m.Storage
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*MsgCreateStorage)(nil), "ethclient.ethclient.MsgCreateStorage")
 	proto.RegisterType((*MsgCreateStorageResponse)(nil), "ethclient.ethclient.MsgCreateStorageResponse")
@@ -140,7 +148,7 @@ func init() {
 func init() { proto.RegisterFile("ethclient/ethclient/tx.proto", fileDescriptor_492b3ce756be7624) }
 
 var fileDescriptor_492b3ce756be7624 = []byte{
-	// 225 bytes of a gzipped FileDescriptorProto
+	// 243 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x49, 0x2d, 0xc9, 0x48,
 	0xce, 0xc9, 0x4c, 0xcd, 0x2b, 0xd1, 0x47, 0xb0, 0x4a, 0x2a, 0xf4, 0x0a, 0x8a, 0xf2, 0x4b, 0xf2,
 	0x85, 0x84, 0xe1, 0x62, 0x7a, 0x70, 0x96, 0x94, 0x22, 0x36, 0x2d, 0xc5, 0x25, 0xf9, 0x45, 0x89,
@@ -148,14 +156,15 @@ var fileDescriptor_492b3ce756be7624 = []byte{
 	0xa9, 0xc1, 0x10, 0x19, 0x21, 0x09, 0x2e, 0xf6, 0x64, 0x90, 0x40, 0x7e, 0x91, 0x04, 0xa3, 0x02,
 	0xa3, 0x06, 0x67, 0x10, 0x8c, 0x0b, 0x92, 0x49, 0x4c, 0x49, 0x29, 0x4a, 0x2d, 0x2e, 0x96, 0x60,
 	0x82, 0xc8, 0x40, 0xb9, 0x20, 0x19, 0xa8, 0xc1, 0x12, 0xcc, 0x10, 0x19, 0x28, 0x57, 0x48, 0x84,
-	0x8b, 0x35, 0x29, 0x27, 0x3f, 0x39, 0x5b, 0x82, 0x05, 0x2c, 0x0e, 0xe1, 0x28, 0x49, 0x71, 0x49,
-	0xa0, 0xdb, 0x1b, 0x94, 0x5a, 0x5c, 0x90, 0x9f, 0x57, 0x9c, 0x6a, 0x94, 0xc3, 0xc5, 0xec, 0x5b,
-	0x9c, 0x2e, 0x94, 0xca, 0xc5, 0x8b, 0xea, 0x2e, 0x55, 0x3d, 0x2c, 0x9e, 0xd4, 0x43, 0x37, 0x46,
-	0x4a, 0x97, 0x28, 0x65, 0x30, 0xdb, 0x9c, 0x4c, 0x4f, 0x3c, 0x92, 0x63, 0xbc, 0xf0, 0x48, 0x8e,
-	0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96, 0x63, 0xb8, 0xf1, 0x58,
-	0x8e, 0x21, 0x4a, 0x1a, 0x11, 0x68, 0x15, 0xc8, 0x61, 0x5e, 0x59, 0x90, 0x5a, 0x9c, 0xc4, 0x06,
-	0x0e, 0x3f, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x7e, 0x4d, 0xcc, 0x52, 0x97, 0x01, 0x00,
-	0x00,
+	0x8b, 0x35, 0x29, 0x27, 0x3f, 0x39, 0x5b, 0x82, 0x45, 0x81, 0x51, 0x83, 0x39, 0x08, 0xc2, 0x51,
+	0x0a, 0xe2, 0x92, 0x40, 0xb7, 0x37, 0x28, 0xb5, 0xb8, 0x20, 0x3f, 0xaf, 0x38, 0x55, 0xc8, 0x0c,
+	0x61, 0x16, 0xc8, 0x7e, 0x6e, 0x23, 0x19, 0x3d, 0x2c, 0xbe, 0xd3, 0x83, 0x69, 0x83, 0x29, 0x36,
+	0xca, 0xe1, 0x62, 0xf6, 0x2d, 0x4e, 0x17, 0x4a, 0xe5, 0xe2, 0x45, 0xf5, 0x8f, 0x2a, 0x56, 0xed,
+	0xe8, 0xd6, 0x4b, 0xe9, 0x12, 0xa5, 0x0c, 0xe6, 0x4a, 0x27, 0xd3, 0x13, 0x8f, 0xe4, 0x18, 0x2f,
+	0x3c, 0x92, 0x63, 0x7c, 0xf0, 0x48, 0x8e, 0x71, 0xc2, 0x63, 0x39, 0x86, 0x0b, 0x8f, 0xe5, 0x18,
+	0x6e, 0x3c, 0x96, 0x63, 0x88, 0x92, 0x46, 0x04, 0x76, 0x05, 0x72, 0x5c, 0x55, 0x16, 0xa4, 0x16,
+	0x27, 0xb1, 0x81, 0xc3, 0xdd, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x1b, 0xdb, 0x62, 0x20, 0xcf,
+	0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -258,12 +267,10 @@ func (m *MsgCreateStorage) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
-	if len(m.Block) > 0 {
-		i -= len(m.Block)
-		copy(dAtA[i:], m.Block)
-		i = encodeVarintTx(dAtA, i, uint64(len(m.Block)))
+	if m.Block != 0 {
+		i = encodeVarintTx(dAtA, i, uint64(m.Block))
 		i--
-		dAtA[i] = 0x22
+		dAtA[i] = 0x20
 	}
 	if len(m.Storage) > 0 {
 		i -= len(m.Storage)
@@ -309,6 +316,18 @@ func (m *MsgCreateStorageResponse) MarshalToSizedBuffer(dAtA []byte) (int, error
 	_ = i
 	var l int
 	_ = l
+	if m.Storage != nil {
+		{
+			size, err := m.Storage.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintTx(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -341,9 +360,8 @@ func (m *MsgCreateStorage) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovTx(uint64(l))
 	}
-	l = len(m.Block)
-	if l > 0 {
-		n += 1 + l + sovTx(uint64(l))
+	if m.Block != 0 {
+		n += 1 + sovTx(uint64(m.Block))
 	}
 	return n
 }
@@ -354,6 +372,10 @@ func (m *MsgCreateStorageResponse) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.Storage != nil {
+		l = m.Storage.Size()
+		n += 1 + l + sovTx(uint64(l))
+	}
 	return n
 }
 
@@ -489,10 +511,10 @@ func (m *MsgCreateStorage) Unmarshal(dAtA []byte) error {
 			m.Storage = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
-			if wireType != 2 {
+			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Block", wireType)
 			}
-			var stringLen uint64
+			m.Block = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowTx
@@ -502,24 +524,11 @@ func (m *MsgCreateStorage) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
+				m.Block |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthTx
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthTx
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Block = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])
@@ -570,6 +579,42 @@ func (m *MsgCreateStorageResponse) Unmarshal(dAtA []byte) error {
 			return fmt.Errorf("proto: MsgCreateStorageResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Storage", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Storage == nil {
+				m.Storage = &Storage{}
+			}
+			if err := m.Storage.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

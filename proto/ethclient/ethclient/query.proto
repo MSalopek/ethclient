@@ -43,7 +43,7 @@ message QueryParamsResponse {
 
 message QueryGetStorageRequest {
   string address = 1;
-  string block   = 2;
+  int64 block   = 2;
   string key     = 3;
 }
 
@@ -54,7 +54,7 @@ message QueryGetStorageResponse {
 message QueryProofRequest {
   string address = 1;
   string storage = 2;
-  string block   = 3;
+  int64 block   = 3;
 }
 
 message QueryProofResponse {
