@@ -15,8 +15,10 @@ message MsgCreateStorage {
   string address = 2;
   string storage = 3;
   // ethereum block height as hex string (padded)
-  string block = 4;
+  int64 block = 4;
 }
 
-message MsgCreateStorageResponse {}
+message MsgCreateStorageResponse {
+  Storage storage = 1;
+}
 

@@ -18,24 +18,13 @@ func (k msgServer) CreateStorage(goCtx context.Context, msg *types.MsgCreateStor
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "already set")
 	}
 
-	var storage = types.Storage{
-		Address: msg.Address,
-		Storage: msg.Storage,
-		Block:   msg.Block,
-		Value:   "TODO",
-		Args: &types.Args{
-			Address: msg.Address,
-			Storage: msg.Storage,
-			Block:   msg.Block,
-		},
+	// Fetch ETH storage & proofs using the ETH RPC client
+	s, err := k.EthCreateStorage(ctx, msg.Address, msg.Storage, msg.Block)
+	if err != nil {
+		return &types.MsgCreateStorageResponse{}, err
 	}
 
-	k.SetStorage(
-		ctx,
-		storage,
-		msg.Address,
-		msg.Storage,
-		msg.Block,
-	)
-	return &types.MsgCreateStorageResponse{}, nil
+	return &types.MsgCreateStorageResponse{
+		Storage: &s,
+	}, nil
 }

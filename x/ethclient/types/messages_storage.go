@@ -46,5 +46,14 @@ func (msg *MsgCreateStorage) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+	if msg.Address == "" {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "address cannot be empty")
+	}
+	if msg.Storage == "" {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "storage cannot be empty")
+	}
+	if msg.Block == "" {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "block cannot be empty")
+	}
 	return nil
 }
