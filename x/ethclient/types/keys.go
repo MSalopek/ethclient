@@ -22,6 +22,7 @@ func KeyPrefix(p string) []byte {
 
 const (
 	StorageKeyPrefix = "Storage"
+	ProofKeyPrefix   = "Proof"
 )
 
 // Returns storage key in the form "Storage/{address}/{key}/{block}" as bytes
@@ -29,4 +30,10 @@ const (
 // NOTE: this can be made more efficient
 func GetStorageKey(address, key, block string) []byte {
 	return []byte(fmt.Sprintf("%s/%s/%s/%s", StorageKeyPrefix, address, key, block))
+}
+
+// Returns storage key in the form "Proof/{address}/{key}/{block}" as bytes
+// NOTE: this can be made more efficient
+func GetProofKey(address, key, block string) []byte {
+	return []byte(fmt.Sprintf("%s/%s/%s/%s", ProofKeyPrefix, address, key, block))
 }

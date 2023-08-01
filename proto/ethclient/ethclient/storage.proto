@@ -22,3 +22,11 @@ message Args {
   // ethereum block height as hex string (padded)
   string block = 3;
 }
+
+
+// Storage Merkle Proof obtained by eth_getProof call
+// used to verify the value of a storage key
+message StorageProof {
+  // JSON serialized eth_getProof response
+  bytes proof = 1;
+}

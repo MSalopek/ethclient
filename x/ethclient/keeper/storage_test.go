@@ -18,6 +18,14 @@ func createTestStorage(keeper *keeper.Keeper, ctx sdk.Context, addr, key, block 
 	return item
 }
 
+func createTestProof(keeper *keeper.Keeper, ctx sdk.Context, addr, key, block string) types.StorageProof {
+	item := types.StorageProof{
+		Proof: []byte(`{"storage": 0, proof: []}`),
+	}
+	keeper.SetProof(ctx, addr, key, block, item)
+	return item
+}
+
 func TestStorageCRUD(t *testing.T) {
 	keeper, ctx := keepertest.EthclientKeeper(t)
 	addr := "mock-addr"
@@ -25,6 +33,20 @@ func TestStorageCRUD(t *testing.T) {
 	block := "mock-block"
 	item := createTestStorage(keeper, ctx, addr, key, block)
 	rst, found := keeper.GetStorage(ctx, addr, key, block)
+	require.True(t, found)
+	require.Equal(t,
+		nullify.Fill(&item),
+		nullify.Fill(&rst),
+	)
+}
+
+func TestProofCRUD(t *testing.T) {
+	keeper, ctx := keepertest.EthclientKeeper(t)
+	addr := "mock-addr"
+	key := "mock-key"
+	block := "mock-block"
+	item := createTestProof(keeper, ctx, addr, key, block)
+	rst, found := keeper.GetProof(ctx, addr, key, block)
 	require.True(t, found)
 	require.Equal(t,
 		nullify.Fill(&item),

@@ -14,11 +14,10 @@ var (
 	// custom application configuration TOML template.
 	customTemplate = `
 ###############################################################################
-###                        Custom ETH Configuration                         ###
+###                        ehereum RPC Configuration                        ###
 ###############################################################################
-# "ethereum-rpc-url defines a URL of an ethereum RPC node to
-# it is used to query eth state and proofs
-#
+
+# URL of an ethereum RPC node used to query state and proofs
 ethereum-rpc-url = "{{ .EthereumRpcURL }}"
 `
 )
@@ -38,5 +37,5 @@ type CustomAppConfig struct {
 
 	// BypassMinFeeMsgTypes defines custom message types the operator may set that
 	// will bypass minimum fee checks during CheckTx.
-	ethereumRpcURL []string `mapstructure:"ethereum-rpc-url"`
+	EthereumRpcURL string `mapstructure:"ethereum-rpc-url"`
 }
