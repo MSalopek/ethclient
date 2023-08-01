@@ -1,6 +1,8 @@
 package types
 
 import (
+	"strings"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
@@ -52,6 +54,11 @@ func (msg *MsgCreateStorage) ValidateBasic() error {
 	if msg.Storage == "" {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "storage cannot be empty")
 	}
+	// check that storage is a hexadecimal string
+	if !strings.HasPrefix(msg.Storage, "0x") {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "storage must be a hexadecimal string ( start with 0x )")
+	}
+
 	if msg.Block == 0 {
 		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "block cannot be empty")
 	}

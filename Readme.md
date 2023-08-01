@@ -33,19 +33,34 @@ The methods are:
 * `CreateStorage`
     * args: `account`, `height` (block height), `storageKey`
     * e.g. `ethclientd q ethclient storage create-storage`
+    * **users must calculate the storage keys indexes on their own - check this [guide](https://docs.infura.io/networks/ethereum/json-rpc-methods/eth_getstorageat)**
 
 **Queries**
 * `QueryStorage`
     * args: `account`, `height` (block height ), `storageKey`
     * return storage value with metadata (arguments used to retrieve it from ethereum)
     * e.g. `ethclientd q ethclient storage`
+    * **users must calculate the storage indexes on their own - check this [guide](https://docs.infura.io/networks/ethereum/json-rpc-methods/eth_getstorageat)**
+
 
 * `QueryProof`
     * args `account`, `height`, `storageKey`
     * return proofs for the storage value so they can be independently verified
     * e.g. `ethclientd q ethclient proof`
+    * **users must calculate the storage indexes on their own - check this [guide](https://docs.infura.io/networks/ethereum/json-rpc-methods/eth_getstorageat)**
+
 
 All methods have a corresponding gRPC method implemented and can be accessed using the CLI commands or RPC calls.
+
+All methods for interacting with an ethereum RPC node are in `/x/ethclient/keeper/eth_client`:
+
+```golang
+func (k Keeper) MustDialEthClient(apiURL string) (*ethclient.Client, *gethclient.Client) {..}
+func (k Keeper) EthCreateStorage(ctx sdk.Context, address, storageKey string, block int64) (types.Storage, error) {...}
+func (k Keeper) EthGetStorage(ctx context.Context, address, storage string, block int64) ([]byte, error) {...}
+func (k Keeper) EthGetProof(ctx context.Context, address, storage string, block int64) ([]byte, error) {...}
+```
+
 
 # How to use
 
@@ -102,7 +117,7 @@ build:
   main: cmd/ethclientd
 ```
 
-## Get started
+## Starting the chain
 
 ```
 ignite chain serve

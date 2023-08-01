@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -34,8 +35,9 @@ func main() {
 	fmt.Println("we have a connection")
 	ctx := context.Background()
 	addr := common.HexToAddress("0xB9951B43802dCF3ef5b14567cb17adF367ed1c0F")
-	zeroHash := common.HexToHash("0x0")                           // data at slot 0
-	storageVal, err := client.StorageAt(ctx, addr, zeroHash, nil) // value is hexadecimal number
+	zeroHash := common.HexToHash("0x0") // data at slot 0
+	blockBigInt := big.NewInt(int64(17813192))
+	storageVal, err := client.StorageAt(ctx, addr, zeroHash, blockBigInt) // value is hexadecimal number
 	if err != nil {
 		fmt.Println("HAVE ERR", err)
 		return
@@ -43,7 +45,7 @@ func main() {
 	fmt.Println("RESULT", storageVal)
 	padded := common.LeftPadBytes([]byte{0x0}, 32)
 	hex := common.Bytes2Hex(padded)
-	proof, err := geth.GetProof(ctx, addr, []string{hex}, nil)
+	proof, err := geth.GetProof(ctx, addr, []string{hex}, blockBigInt)
 	if err != nil {
 		fmt.Println("HAVE ERR in PROOF", err)
 		return
