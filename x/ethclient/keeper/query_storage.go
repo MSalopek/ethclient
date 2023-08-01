@@ -17,11 +17,10 @@ func (k Keeper) QueryStorage(goCtx context.Context, req *types.QueryGetStorageRe
 	}
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	val, found := k.GetStorage(ctx, req.Address, req.Key, req.Block)
+	val, found := k.GetStorage(ctx, req.Address, req.Storage, req.Block)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")
 	}
 
-	// TODO:
 	return &types.QueryGetStorageResponse{Storage: val}, nil
 }

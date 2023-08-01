@@ -34,7 +34,7 @@ func main() {
 	fmt.Println("we have a connection")
 	ctx := context.Background()
 	addr := common.HexToAddress("0xB9951B43802dCF3ef5b14567cb17adF367ed1c0F")
-	zeroHash := common.HexToHash("0x1")                           // data at slot 0
+	zeroHash := common.HexToHash("0x0")                           // data at slot 0
 	storageVal, err := client.StorageAt(ctx, addr, zeroHash, nil) // value is hexadecimal number
 	if err != nil {
 		fmt.Println("HAVE ERR", err)

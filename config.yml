@@ -19,3 +19,10 @@ faucet:
 validators:
 - name: alice
   bonded: 100000000stake
+  config:
+    moniker: "eth-enabled-node"
+  app:
+   # chain will not function propely without this variable pointing to a node URL
+    ethereum-rpc-url: "<eth_rpc_node_url>"
+build:
+  main: cmd/ethclientd

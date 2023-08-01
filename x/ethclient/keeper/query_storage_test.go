@@ -30,7 +30,7 @@ func TestStorageQuery(t *testing.T) {
 			desc: "First",
 			request: &types.QueryGetStorageRequest{
 				Address: addr,
-				Key:     key,
+				Storage: key,
 				Block:   block,
 			},
 			response: &types.QueryGetStorageResponse{Storage: item},

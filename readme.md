@@ -30,16 +30,20 @@ Ethereum data can be used for various purposes, so methods to store, access and 
 
 The methods are:
 **Transactions**
-* `CreateData`
+* `CreateStorage`
     * args: `account`, `height` (block height), `storageKey`
+    * e.g. `ethclientd q ethclient storage create-storage`
 
 **Queries**
 * `QueryStorage`
     * args: `account`, `height` (block height ), `storageKey`
     * return storage value with metadata (arguments used to retrieve it from ethereum)
+    * e.g. `ethclientd q ethclient storage`
+
 * `QueryProof`
     * args `account`, `height`, `storageKey`
     * return proofs for the storage value so they can be independently verified
+    * e.g. `ethclientd q ethclient proof`
 
 All methods have a corresponding gRPC method implemented and can be accessed using the CLI commands or RPC calls.
 
@@ -53,12 +57,41 @@ ignite chain serve
 
 `serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
 
-### Configure
+### Configuration
 
-Your blockchain in development can be configured with `config.yml`. To learn more, see the [Ignite CLI docs](https://docs.ignite.com).
+The local development setup uses additional config flags in `app.toml`. The flag should be set in your `config.yml`
+
+```yaml
+version: 1
+accounts:
+- name: alice
+  coins:
+  - 20000token
+  - 200000000stake
+- name: bob
+  coins:
+  - 10000token
+  - 100000000stake
+client:
+  openapi:
+    path: docs/static/openapi.yml
+faucet:
+  name: bob
+  coins:
+  - 5token
+  - 100000stake
+validators:
+- name: alice
+  bonded: 100000000stake
+  config:
+    moniker: "eth-enabled-node"
+  app:
+    ethereum-rpc-url: "<eth_rpc_node_api_url>"
+build:
+  main: cmd/ethclientd
+```
 
 
-The frontend app is built using the `@starport/vue` and `@starport/vuex` packages. For details, see the [monorepo for Ignite front-end development](https://github.com/ignite/web).
 
 ### Install
 To install the latest version of your blockchain node's binary, execute the following command on your machine:

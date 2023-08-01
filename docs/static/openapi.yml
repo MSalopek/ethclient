@@ -34962,12 +34962,16 @@ paths:
   /ethclient/ethclient/proof/{address}/{storage}/{block}:
     get:
       summary: Queries a list of Proof items.
-      operationId: EthclientEthclientProof
+      operationId: EthclientEthclientQueryProof
       responses:
         '200':
           description: A successful response.
           schema:
             type: object
+            properties:
+              proof:
+                type: string
+                title: JSON encoded proof obtained by eth_getProof
         default:
           description: An unexpected error response.
           schema:
@@ -34999,6 +35003,7 @@ paths:
           in: path
           required: true
           type: string
+          format: int64
       tags:
         - Query
   /ethclient/ethclient/storage:
@@ -35014,30 +35019,28 @@ paths:
               Storage:
                 type: object
                 properties:
-                  storage:
-                    type: string
-                    title: storage key
                   value:
                     type: string
-                  address:
-                    type: string
-                    title: timestamp when the value was fetched
-                  block:
-                    type: string
-                  args:
+                    format: byte
+                    title: ethereum storage key
+                  meta:
                     title: medata about the value and request that fetched it
                     type: object
                     properties:
                       address:
                         type: string
+                        title: contract address that was queried
                       storage:
                         type: string
+                        title: storage key that was queried for the contract
                       block:
                         type: string
+                        format: int64
                         title: ethereum block height as hex string (padded)
-                  timestamp:
-                    type: string
-                    format: int64
+                      timestamp:
+                        type: string
+                        format: int64
+                        title: unix nano timestamp when data was fetched
         default:
           description: An unexpected error response.
           schema:
@@ -35065,7 +35068,9 @@ paths:
           in: query
           required: false
           type: string
-        - name: key
+          format: int64
+        - name: storage
+          description: ethereum storage key
           in: query
           required: false
           type: string
@@ -70679,18 +70684,51 @@ definitions:
             NOTE: The amount field is an Int which implements the custom method
             signatures required by gogoproto.
     description: Period defines a length of time and amount of coins that will vest.
-  ethclient.ethclient.Args:
+  ethclient.ethclient.MetaData:
     type: object
     properties:
       address:
         type: string
+        title: contract address that was queried
       storage:
         type: string
+        title: storage key that was queried for the contract
       block:
         type: string
+        format: int64
         title: ethereum block height as hex string (padded)
+      timestamp:
+        type: string
+        format: int64
+        title: unix nano timestamp when data was fetched
   ethclient.ethclient.MsgCreateStorageResponse:
     type: object
+    properties:
+      storage:
+        type: object
+        properties:
+          value:
+            type: string
+            format: byte
+            title: ethereum storage key
+          meta:
+            title: medata about the value and request that fetched it
+            type: object
+            properties:
+              address:
+                type: string
+                title: contract address that was queried
+              storage:
+                type: string
+                title: storage key that was queried for the contract
+              block:
+                type: string
+                format: int64
+                title: ethereum block height as hex string (padded)
+              timestamp:
+                type: string
+                format: int64
+                title: unix nano timestamp when data was fetched
   ethclient.ethclient.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -70700,30 +70738,28 @@ definitions:
       Storage:
         type: object
         properties:
-          storage:
-            type: string
-            title: storage key
           value:
             type: string
-          address:
-            type: string
-            title: timestamp when the value was fetched
-          block:
-            type: string
-          args:
+            format: byte
+            title: ethereum storage key
+          meta:
             title: medata about the value and request that fetched it
             type: object
             properties:
               address:
                 type: string
+                title: contract address that was queried
               storage:
                 type: string
+                title: storage key that was queried for the contract
               block:
                 type: string
+                format: int64
                 title: ethereum block height as hex string (padded)
-          timestamp:
-            type: string
-            format: int64
+              timestamp:
+                type: string
+                format: int64
+                title: unix nano timestamp when data was fetched
   ethclient.ethclient.QueryParamsResponse:
     type: object
     properties:
@@ -70733,33 +70769,35 @@ definitions:
     description: QueryParamsResponse is response type for the Query/Params RPC method.
   ethclient.ethclient.QueryProofResponse:
     type: object
+    properties:
+      proof:
+        type: string
+        title: JSON encoded proof obtained by eth_getProof
   ethclient.ethclient.Storage:
     type: object
     properties:
-      storage:
-        type: string
-        title: storage key
       value:
         type: string
-      address:
-        type: string
-        title: timestamp when the value was fetched
-      block:
-        type: string
-      args:
+        format: byte
+        title: ethereum storage key
+      meta:
         title: medata about the value and request that fetched it
         type: object
         properties:
           address:
             type: string
+            title: contract address that was queried
           storage:
             type: string
+            title: storage key that was queried for the contract
           block:
             type: string
+            format: int64
             title: ethereum block height as hex string (padded)
-      timestamp:
-        type: string
-        format: int64
+          timestamp:
+            type: string
+            format: int64
+            title: unix nano timestamp when data was fetched
   ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccountResponse:
     type: object
     properties:
