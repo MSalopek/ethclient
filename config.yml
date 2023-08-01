@@ -21,6 +21,10 @@ validators:
   bonded: 100000000stake
   config:
     moniker: "eth-enabled-node"
+    # increase blocktime to avoid timing issues
+    timeout_propose: "6s"
+    timeout_prevote: "6s"
+    timeout_precommit: "6s"
   app:
    # chain will not function propely without this variable pointing to a node URL
     ethereum-rpc-url: "<eth_rpc_node_url>"
