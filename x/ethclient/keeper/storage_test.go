@@ -22,7 +22,7 @@ func createTestProof(keeper *keeper.Keeper, ctx sdk.Context, addr, key string, b
 	item := types.StorageProof{
 		Proof: []byte(`{"storage": 0, proof: []}`),
 	}
-	keeper.SetProof(ctx, addr, key, block, item)
+	keeper.SetProof(ctx, addr, key, block, &item)
 	return item
 }
 

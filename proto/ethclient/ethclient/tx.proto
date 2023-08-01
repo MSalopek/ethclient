@@ -8,7 +8,10 @@ option go_package = "ethclient/x/ethclient/types";
 
 // Msg defines the Msg service.
 service Msg {
+  // calls eth_getStorageAt and saves the result
   rpc CreateStorage (MsgCreateStorage) returns (MsgCreateStorageResponse);
+  // calls eth_getProof and saves the result
+  rpc StoreProof (MsgStoreProof) returns (MsgStoreProofResponse);
 }
 message MsgCreateStorage {
   string creator = 1;
@@ -20,5 +23,18 @@ message MsgCreateStorage {
 
 message MsgCreateStorageResponse {
   Storage storage = 1;
+}
+
+message MsgStoreProof {
+  string creator = 1;
+  string address = 2;
+  string storage = 3;
+  // ethereum block height as hex string (padded)
+  int64 block = 4;
+}
+
+message MsgStoreProofResponse {
+  // JSON serialized proof
+  StorageProof proof = 1;
 }
 

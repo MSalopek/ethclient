@@ -10,10 +10,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func CmdCreateStorage() *cobra.Command {
+func CmdStoreProof() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-storage",
-		Short: "Create storage <address> <storage> <block>",
+		Use:   "store-proof",
+		Short: "Store proof <address> <storage> <block>",
 		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			reqAddress := args[0]
@@ -30,7 +30,7 @@ func CmdCreateStorage() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateStorage(clientCtx.GetFromAddress().String(), reqAddress, reqStorage, int64(parsedBlock))
+			msg := types.NewMsgStoreProof(clientCtx.GetFromAddress().String(), reqAddress, reqStorage, int64(parsedBlock))
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}

@@ -29,24 +29,24 @@ func (k Keeper) GetStorage(ctx sdk.Context, address, key string, block int64) (v
 }
 
 // GetProof returns storage proof
-func (k Keeper) GetProof(ctx sdk.Context, address, key string, block int64) (types.StorageProof, bool) {
+func (k Keeper) GetProof(ctx sdk.Context, address, key string, block int64) (*types.StorageProof, bool) {
 	store := ctx.KVStore(k.storeKey)
 	storeKey := types.GetProofKey(address, key, block)
 
 	b := store.Get(storeKey)
 	if b == nil {
-		return types.StorageProof{}, false
+		return &types.StorageProof{}, false
 	}
 
 	var proof types.StorageProof
 	k.cdc.MustUnmarshal(b, &proof)
-	return proof, true
+	return &proof, true
 }
 
 // SetProof sets storage proof
-func (k Keeper) SetProof(ctx sdk.Context, address, key string, block int64, proof types.StorageProof) {
+func (k Keeper) SetProof(ctx sdk.Context, address, key string, block int64, proof *types.StorageProof) {
 	store := ctx.KVStore(k.storeKey)
 	storeKey := types.GetProofKey(address, key, block)
-	b := k.cdc.MustMarshal(&proof)
+	b := k.cdc.MustMarshal(proof)
 	store.Set(storeKey, b)
 }

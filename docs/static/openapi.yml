@@ -70729,6 +70729,17 @@ definitions:
                 type: string
                 format: int64
                 title: unix nano timestamp when data was fetched
+  ethclient.ethclient.MsgStoreProofResponse:
+    type: object
+    properties:
+      proof:
+        title: JSON serialized proof
+        type: object
+        properties:
+          proof:
+            type: string
+            format: byte
+            title: JSON serialized eth_getProof response
   ethclient.ethclient.Params:
     type: object
     description: Params defines the parameters for the module.
@@ -70798,6 +70809,16 @@ definitions:
             type: string
             format: int64
             title: unix nano timestamp when data was fetched
+  ethclient.ethclient.StorageProof:
+    type: object
+    properties:
+      proof:
+        type: string
+        format: byte
+        title: JSON serialized eth_getProof response
+    title: |-
+      Storage Merkle Proof obtained by eth_getProof call
+      used to verify the value of a storage key
   ibc.applications.interchain_accounts.controller.v1.MsgRegisterInterchainAccountResponse:
     type: object
     properties:

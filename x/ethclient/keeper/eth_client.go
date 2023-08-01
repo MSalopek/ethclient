@@ -36,22 +36,13 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
-// TODO: add proof verification by building a merkle tree from the proof and verifying the hash
-// Fetch ethereum storage value & proofs for contract address and storage (key) at block height.
+// Fetch ethereum storage value for contract address and storage (key) at block height.
 // In case the call fails, no data will be stored.
-//
-// NOTE: both storage value & proofs are inserted to DB using this method
 func (k Keeper) EthCreateStorage(ctx sdk.Context, address, storageKey string, block int64) (types.Storage, error) {
 	storageValRes, err := k.EthGetStorage(ctx, address, storageKey, block)
 	if err != nil {
 		return types.Storage{}, err
 	}
-
-	proofRes, err := k.EthGetProof(ctx, address, storageKey, block)
-	if err != nil {
-		return types.Storage{}, err
-	}
-
 	meta := types.MetaData{
 		Address:   address,
 		Storage:   storageKey,
@@ -62,14 +53,26 @@ func (k Keeper) EthCreateStorage(ctx sdk.Context, address, storageKey string, bl
 		Value: storageValRes,
 		Meta:  &meta,
 	}
+
+	k.SetStorage(ctx, s, address, storageKey, block)
+
+	return s, nil
+}
+
+// Fetch ethereum proof for contract address and storage (key) at block height.
+// TODO: add proof verification by building a merkle tree from the proof and verifying against the hash
+func (k Keeper) EthStoreProof(ctx sdk.Context, address, storageKey string, block int64) (types.StorageProof, error) {
+	proofRes, err := k.EthGetProof(ctx, address, storageKey, block)
+	if err != nil {
+		return types.StorageProof{}, err
+	}
+
 	p := types.StorageProof{
 		Proof: proofRes,
 	}
 
-	k.SetStorage(ctx, s, address, storageKey, block)
-	k.SetProof(ctx, address, storageKey, block, p)
-
-	return s, nil
+	k.SetProof(ctx, address, storageKey, block, &p)
+	return p, nil
 }
 
 // Fetch ethereum storage value for contract address and storage (key) at block height.
@@ -85,13 +88,11 @@ func (k Keeper) EthGetStorage(ctx context.Context, address, storage string, bloc
 }
 
 // Fetch ethereum proof for storage value for contract address and storage (key) at block height.
+// the storage address must be a 32 byte storage key
 func (k Keeper) EthGetProof(ctx context.Context, address, storage string, block int64) ([]byte, error) {
-	padded := common.LeftPadBytes([]byte{0x0}, 32)
-
-	hex := common.Bytes2Hex(padded)
 	addr := common.HexToAddress(address)
 	b := big.NewInt(block)
-	proof, err := k.ethExtendedClient.GetProof(ctx, addr, []string{hex}, b)
+	proof, err := k.ethExtendedClient.GetProof(ctx, addr, []string{storage}, b)
 	if err != nil {
 		return nil, err
 	}

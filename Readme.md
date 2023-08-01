@@ -31,24 +31,31 @@ Ethereum data can be used for various purposes, so methods to store, access and 
 The methods are:
 **Transactions**
 * `CreateStorage`
+    * stores storage value (no verification happens atm)
     * args: `account`, `height` (block height), `storageKey`
-    * e.g. `ethclientd q ethclient storage create-storage`
-    * **users must calculate the storage keys indexes on their own - check this [guide](https://docs.infura.io/networks/ethereum/json-rpc-methods/eth_getstorageat)**
+    * e.g. `ethclientd tx ethclient create-storage 0xB9951B43802dCF3ef5b14567cb17adF367ed1c0F 0x0 17813192 --from alice -y`
+    * **users must calculate the storage keys indexes on their own - check [here](https://docs.infura.io/networks/ethereum/json-rpc-methods/eth_getstorageat) and [here](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/#storage-trie)**
+
+* `StoreProof`
+    * stores proof (no verification happens atm)
+    * args: `account`, `height` (block height), `storageKey`
+    * e.g. `ethclientd tx ethclient store-proof 0xB9951B43802dCF3ef5b14567cb17adF367ed1c0F 0x0 17813192 --from alice -y`
+    * **users must calculate the storage keys indexes on their own - check [here](https://docs.infura.io/networks/ethereum/json-rpc-methods/eth_getstorageat) and [here](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/#storage-trie)**
+    * currently there's an issue -> tx is invalid for unknown reason
 
 **Queries**
 * `QueryStorage`
     * args: `account`, `height` (block height ), `storageKey`
     * return storage value with metadata (arguments used to retrieve it from ethereum)
-    * e.g. `ethclientd q ethclient storage`
-    * **users must calculate the storage indexes on their own - check this [guide](https://docs.infura.io/networks/ethereum/json-rpc-methods/eth_getstorageat)**
+    * e.g. `ethclientd q ethclient proof 0xB9951B43802dCF3ef5b14567cb17adF367ed1c0F 0x0 17813192`
+    * **users must calculate the storage indexes on their own - check [here](https://docs.infura.io/networks/ethereum/json-rpc-methods/eth_getstorageat) and [here](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/#storage-trie)**
 
 
 * `QueryProof`
     * args `account`, `height`, `storageKey`
     * return proofs for the storage value so they can be independently verified
     * e.g. `ethclientd q ethclient proof`
-    * **users must calculate the storage indexes on their own - check this [guide](https://docs.infura.io/networks/ethereum/json-rpc-methods/eth_getstorageat)**
-
+    * **users must calculate the storage indexes on their own - check [here](https://docs.infura.io/networks/ethereum/json-rpc-methods/eth_getstorageat) and [here](https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/#storage-trie)**
 
 All methods have a corresponding gRPC method implemented and can be accessed using the CLI commands or RPC calls.
 
