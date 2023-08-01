@@ -49,17 +49,28 @@ All methods have a corresponding gRPC method implemented and can be accessed usi
 
 # How to use
 
-## Get started
+### Install ignite cli
+To install the latest version of `ignite cli`, execute the following command on your machine:
 
 ```
-ignite chain serve
+curl https://get.ignite.com/username/ethclient@latest! | sudo bash
 ```
 
-`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
+The latest version at the time of writing is:
+```
+➜  config ignite version
+Ignite CLI version:		     v0.27.1
+Ignite CLI build date:		2023-06-13T13:42:09Z
+Ignite CLI source hash:		4acd1f185afb6d8d1a837e54f04c091121cfae01
+Ignite CLI config version:	v1
+Cosmos SDK version:		v0.47.3
+```
 
 ### Configuration
 
-The local development setup uses additional config flags in `app.toml`. The flag should be set in your `config.yml`
+The local development setup uses additional config flags in `app.toml`. The `ethereum-rpc-url` flag should be set in your `config.yml` or in your `app.toml` if you are not running the chain using `ignire chain serve`.
+
+The blockchain will not start if an ethereum RPC node URL is not available.
 
 ```yaml
 version: 1
@@ -91,23 +102,13 @@ build:
   main: cmd/ethclientd
 ```
 
-
-
-### Install
-To install the latest version of your blockchain node's binary, execute the following command on your machine:
+## Get started
 
 ```
-curl https://get.ignite.com/username/ethclient@latest! | sudo bash
+ignite chain serve
 ```
-`username/ethclient` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
 
-## Learn more
-
-- [Ignite CLI](https://ignite.com/cli)
-- [Tutorials](https://docs.ignite.com/guide)
-- [Ignite CLI docs](https://docs.ignite.com)
-- [Cosmos SDK docs](https://docs.cosmos.network)
-- [Developer Chat](https://discord.gg/ignite)
+`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
 
 
 # Future improvements
