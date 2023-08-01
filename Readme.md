@@ -30,17 +30,16 @@ Ethereum data can be used for various purposes, so methods to store, access and 
 
 The methods are:
 **Transactions**
-* `StoreData`
-    * args: `account`, `height` (block ||  earliest || latest), `storageKey`
-* `ValidateData`
-    * this method checks stored state against data on ethereum
-    * if the data is not valid, the state object will be marked `invalid` and will not be returned in queries
+* `CreateData`
+    * args: `account`, `height` (block height), `storageKey`
 
 **Queries**
-* `QueryData`
-    * args: `account`, `height` (block || latest ), `storageKey`, `meta` (boolean; whether or not to return initial arguments that were used when calling `StoreData`)
+* `QueryStorage`
+    * args: `account`, `height` (block height ), `storageKey`
+    * return storage value with metadata (arguments used to retrieve it from ethereum)
 * `QueryProof`
     * args `account`, `height`, `storageKey`
+    * return proofs for the storage value so they can be independently verified
 
 All methods have a corresponding gRPC method implemented and can be accessed using the CLI commands or RPC calls.
 
@@ -94,6 +93,16 @@ TODOs:
 1. Actually verify proofs obtained from `eth_getProof`
 2. improve testing
 3. improve CRUD
+
+## Add More Tx
+
+Add a Tx allowing users to pay a fee to re-validate proofs.
+
+* `ValidateData`
+    * this method checks stored state against data on ethereum
+    * validation is performed by fetching proofs for storage and re-validating the storage value
+    * if the "old" proof and the "new" are different, the data is `invalid`
+    * if the data is not valid, the state object will be marked `invalid` and will not be returned in queries any more
 
 # Sources
 * https://blog.infura.io/post/how-to-use-ethereum-proofs-2
