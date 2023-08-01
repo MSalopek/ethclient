@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// Look up a proof for a given address, storage key, and block number and return it if found.
 func (k Keeper) QueryProof(goCtx context.Context, req *types.QueryProofRequest) (*types.QueryProofResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -17,8 +18,10 @@ func (k Keeper) QueryProof(goCtx context.Context, req *types.QueryProofRequest) 
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// TODO: Process the query
-	_ = ctx
+	val, found := k.GetProof(ctx, req.Address, req.Storage, req.Block)
+	if !found {
+		return nil, status.Error(codes.NotFound, "not found")
+	}
 
-	return &types.QueryProofResponse{}, nil
+	return &types.QueryProofResponse{Proof: string(val.Proof)}, nil
 }
